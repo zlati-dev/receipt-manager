@@ -23,6 +23,7 @@ A web application for managing receipts and tracking product warranties.
 3.Use search to find image for automatic scanning
 4.Upload receipt image for automatic scanning and saving
 
+
 ## Author
 Zlatka Pencheva 
 2026
