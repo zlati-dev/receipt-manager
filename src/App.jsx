@@ -42,13 +42,7 @@ function App() {
       const {
         data: { text },
       } = await Tesseract.recognize(imagefile, "bul+eng", {
-        workerOptions: {
-          load_system_program: [["provide", "version"]],
-        },
-        workerPath: 'https://unpkg.com/tesseract.js@v5.1.0/dist/tesseract-worker.min.js',
-        langPath: 'https://tessdata.projectnaptha.com/4.0.0_fast',
-        corePath: 'https://unpkg.com/tesseract.js-core@v5.1.0/tesseract-core.wasm.js',
-        logger: (m) => console.log(m), 
+        
       });
 
       console.log("OCR Result:", text);
