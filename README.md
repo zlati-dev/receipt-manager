@@ -1,16 +1,31 @@
-# React + Vite
+# Receipt Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for managing receipts and tracking product warranties.
 
-Currently, two official plugins are available:
+## Features
+-Add receipts with product details
+-Track warranty expiration dates
+-Filter by product name or store
+-Scan receipt images(OCR)
+-Visual warranty status (green/red)
+-Data saved localy in browser
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##Tech stack
+-React
+-Vite
+-CSS
+-Tesseract.js (OCR)
+-LocalStorage
 
-## React Compiler
+## How to use
+1.Add a receipt with product name,store purchase date and warranty months
+2.Green =in warranty/Red =Expired
+3.Use search to find image for automatic scanning
+4.Upload receipt image for automatic scanning and saving
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## Author
+Zlatka Pencheva 
+2026
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
