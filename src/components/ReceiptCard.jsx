@@ -22,7 +22,10 @@ function ReceiptCard({ receipt, onDelete }) {
       <p className="text-gray-500 text-sm mt-1.5 mb-0">
         {receipt.store} · {receipt.purchaseDate}
       </p>
-      
+
+      <p className="text-gray-400 text-sm mt-1 mb-0">{receipt.productName}</p>
+      <p className="text-gray-400 text-sm mt-1 mb-0">Serial: {receipt.serialNumber}</p>
+
       <p className="text-gray-400 text-sm mt-1 mb-0">
         Expires: {warrantyEnd.toLocaleDateString()}
       </p>
