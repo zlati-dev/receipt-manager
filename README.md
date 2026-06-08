@@ -6,22 +6,21 @@ A web application for managing receipts and tracking product warranties.
 -Add receipts with product details
 -Track warranty expiration dates
 -Filter by product name or store
--Scan receipt images(OCR)
+-Save receipt photos permanently for warranty proof 
 -Visual warranty status (green/red)
 -Data saved localy in browser
 
 ##Tech stack
 -React
 -Vite
--CSS
--Tesseract.js (OCR)
+-Tailwind CSS
 -LocalStorage
 
 ## How to use
 1.Add a receipt with product name,store purchase date and warranty months
 2.Green =in warranty/Red =Expired
-3.Use search to find image for automatic scanning
-4.Upload receipt image for automatic scanning and saving
+3.Upload a photo of the physical receip to ssave it as permanent proof.
+
 
 
 ## Author
