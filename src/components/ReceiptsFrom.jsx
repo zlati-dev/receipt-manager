@@ -1,28 +1,17 @@
-import { useState, useEffect } from "react";
-import Tesseract from "tesseract.js";
+import React, { useState } from "react";
 
-function ReceiptForm({ onAdd, onScan, onScanImage, clearScan }) {
+function ReceiptsForm({ onAdd }) {
   const [store, setStore] = useState("");
   const [productName, setProductName] = useState("");
   const [purchaseDate, setPurchaseDate] = useState("");
   const [warrantyMonths, setWarrantyMonths] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [receiptImage, setReceiptImage] = useState(null);
 
-useEffect(() => {
-  if (onScan && typeof onScan === 'string' && onScan.trim() !== '') {
-    
-    setProductName(onScan);
-
-    
-    if (onScan.toLowerCase().includes('lidl')) {
-      setStore('Lidl');
-    } else if (onScan.toLowerCase().includes('kaufland')) {
-      setStore('Kaufland');
-    }
-  }
-}, [onScan]);
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Podavame dannnite gore v funkciyata onAdd, vklyuchitelno i snimkata
     onAdd({
       id: Date.now(),
       store,
@@ -30,17 +19,17 @@ useEffect(() => {
       purchaseDate,
       warrantyMonths: Number(warrantyMonths),
       serialNumber,
+      image: receiptImage, // Dobavqme snimkata kum obekta na belejkata
     });
+
+    // izchistvame formata sled dobavqneto
     setStore("");
     setProductName("");
     setPurchaseDate("");
     setWarrantyMonths("");
     setSerialNumber("");
-    if (clearScan) {
-      clearScan();
-    }
+    setReceiptImage(null);
   };
- 
 
   return (
     <form
@@ -85,20 +74,36 @@ useEffect(() => {
 
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-600">
-          Scan receipt (photo):
+          Add receipt photo (for proof):
         </label>
         <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={(e) => {
-            if (e.target.files[0]) {
-              onScanImage(e.target.files[0]);
-            }
-          }}
-          className="border p-2 rounded-lg text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-        />
+  type="file"
+  accept="image/*"
+  capture="environment"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      
+      // Kogato cheteneto na faila e gotovo, zapazvame snimkata v state-a (Base64 format)
+      reader.onloadend = () => {
+        // reader pazi snimkata (Base64)
+        setReceiptImage(reader.result); 
+      };
+      
+      // Zapochvame chetene na faila kato Base64 string
+      reader.readAsDataURL(file);
+    }
+  }}
+  className="border p-2 rounded-lg text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+/>
       </div>
+
+      {receiptImage && (
+        <div className="mt-2 text-xs text-green-600 flex items-center gap-1 font-medium">
+          <span>✓ Photo uploaded successfully!</span>
+        </div>
+      )}
 
       <button
         type="submit"
@@ -110,4 +115,4 @@ useEffect(() => {
   );
 }
 
-export default ReceiptForm;
+export default ReceiptsForm;
