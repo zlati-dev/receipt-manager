@@ -9,7 +9,7 @@ function ReceiptsForm({ onAdd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Подаваме само текстовите полета нагоре
     onAdd({
       id: Date.now(),
@@ -56,10 +56,17 @@ function ReceiptsForm({ onAdd }) {
       />
 
       <input
-        type="date"
+        type="text"
+        placeholder="Purchase date (e.g.YYYY-MM-DD )" // Подсказваме формата на датата
         value={purchaseDate}
         onChange={(e) => setPurchaseDate(e.target.value)}
-        className="border p-2 rounded-lg focus:outline-none focus:border-blue-500"
+        className="border p-2 rounded-lg focus:outline-none focus:border-blue-500 bg-white text-black w-full"
+        style={{
+          backgroundColor: "#fff", // Изрично подсигуряване за бяло
+          color: "#000",
+          webkitAppearance: "none",
+          appearance: "none",
+        }}
       />
 
       <input
