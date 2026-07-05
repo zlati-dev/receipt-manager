@@ -47,42 +47,41 @@ function ReceiptCard({ receipt, onDelete }) {
             borderLeft: `6px solid ${statusColor}` 
         }}>
             
-            {/* СНИМКА ИЛИ ИНПУТ ЗА СНИМАНЕ (ОТСТРАНИ) */}
-            <div style={{ width: '120px', flexShrink: 0 }}>
-                {cardImage ? (
-                    <img 
-                        src={cardImage}
-                        onClick={() => setShowDetails(!showDetails)}
-                        style={{ 
-                            cursor: 'pointer',
-                            width: '100%',
-                            height: '120px',
-                            objectFit: 'cover',
-                            borderRadius: '8px'
-                        }}
-                        alt="receipt"
-                    />
-                ) : (
-                    <div style={{ 
-                        border: '1px dashed #ccc', 
-                        padding: '10px', 
-                        borderRadius: '8px',
-                        textAlign: 'center',
-                        backgroundColor: '#fcfcfc'
-                    }}>
-                        <label style={{ fontSize: '11px', display: 'block', marginBottom: '5px', color: '#666', fontWeight: 'bold' }}>
-                            📷 СНИМАЙ
-                        </label>
-                        <input 
-                            type="file" 
-                            accept="image/*" 
-                            capture
-                            onChange={handleFileChange}
-                            style={{ width: '100%', fontSize: '10px' }}
-                        />
-                    </div>
-                )}
-            </div>
+           {/* СНИМКА ИЛИ ИНПУТ ЗА СНИМАНЕ (ОТСТРАНИ) */}
+<div style={{ width: '120px', flexShrink: 0 }}>
+    {cardImage ? (
+        <img 
+            src={cardImage}
+            onClick={() => setShowDetails(!showDetails)}
+            style={{ 
+                cursor: 'pointer',
+                width: '100%',
+                height: '120px',
+                objectFit: 'cover',
+                borderRadius: '8px'
+            }}
+            alt="receipt"
+        />
+    ) : (
+        <div style={{ 
+            border: '1px dashed #ccc', 
+            padding: '10px', 
+            borderRadius: '8px',
+            textAlign: 'center',
+            backgroundColor: '#fcfcfc'
+        }}>
+            <label style={{ fontSize: '11px', display: 'block', marginBottom: '5px', color: '#666', fontWeight: 'bold' }}>
+                📷 ДОБАВИ СНИМКА
+            </label>
+            <input 
+                type="file" 
+                accept="image/*" // <-- ОСТАВЯМЕ САМО ТОВА (БЕЗ capture)
+                onChange={handleFileChange}
+                style={{ width: '100%', fontSize: '10px' }}
+            />
+        </div>
+    )}
+</div>
             
             {/* ИНФОРМАЦИЯ НА КАРТАТА */}
             <div style={{ flexGrow: 1 }}>
