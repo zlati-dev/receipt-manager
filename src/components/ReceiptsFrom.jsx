@@ -6,12 +6,11 @@ function ReceiptsForm({ onAdd }) {
   const [purchaseDate, setPurchaseDate] = useState("");
   const [warrantyMonths, setWarrantyMonths] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
-  const [receiptImage, setReceiptImage] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Podavame dannnite gore v funkciyata onAdd, vklyuchitelno i snimkata
+    // Подаваме само текстовите полета нагоре
     onAdd({
       id: Date.now(),
       store,
@@ -19,16 +18,14 @@ function ReceiptsForm({ onAdd }) {
       purchaseDate,
       warrantyMonths: Number(warrantyMonths),
       serialNumber,
-      image: receiptImage, // Dobavqme snimkata kum obekta na belejkata
     });
 
-    // izchistvame formata sled dobavqneto
+    // Изчистваме формата
     setStore("");
     setProductName("");
     setPurchaseDate("");
     setWarrantyMonths("");
     setSerialNumber("");
-    setReceiptImage(null);
   };
 
   return (
@@ -71,39 +68,6 @@ function ReceiptsForm({ onAdd }) {
         placeholder="Serial number"
         className="border p-2 rounded-lg focus:outline-none focus:border-blue-500"
       />
-
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-gray-600">
-          Add receipt photo (for proof):
-        </label>
-        <input
-  type="file"
-  accept="image/*"
-  capture="environment"
-  onChange={(e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      
-      // Kogato cheteneto na faila e gotovo, zapazvame snimkata v state-a (Base64 format)
-      reader.onloadend = () => {
-        // reader pazi snimkata (Base64)
-        setReceiptImage(reader.result); 
-      };
-      
-      // Zapochvame chetene na faila kato Base64 string
-      reader.readAsDataURL(file);
-    }
-  }}
-  className="border p-2 rounded-lg text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-/>
-      </div>
-
-      {receiptImage && (
-        <div className="mt-2 text-xs text-green-600 flex items-center gap-1 font-medium">
-          <span>✓ Photo uploaded successfully!</span>
-        </div>
-      )}
 
       <button
         type="submit"
