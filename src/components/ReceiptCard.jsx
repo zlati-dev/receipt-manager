@@ -145,58 +145,24 @@ function ReceiptCard({ receipt, onDelete, onUpdate }) {
                 border: "1px solid #ccc",
               }}
             />
-            <div style={{ position: "relative", width: "100%" }}>
-              <input
-                type="date"
-                name="purchaseDate"
-                value={editedData.purchaseDate || ""} // Подсигуряваме срещу бял екран, ако е празно
-                onChange={handleInputChange} // Твоята функция за промяна
-                className={!editedData.purchaseDate ? "empty-card-date" : ""}
-                style={{
-                  padding: "6px",
-                  fontSize: "13px",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  backgroundColor: "#fff", // Изрично БЯЛ фон
-                  color: editedData.purchaseDate ? "#000" : "transparent", // Скрива дефолтния текст, ако няма дата
-                  WebkitTextFillColor: editedData.purchaseDate
-                    ? "#000"
-                    : "transparent",
-                  width: "100%",
-                  boxSizing: "border-box",
-                  display: "block",
-                  lineHeight: "1.2",
-                  appearance: "none",
-                  WebkitAppearance: "none",
-                }}
-              />
-
-              {/* Инжектираме стила, който скрива системните иконки на телефона и слага чист placeholder */}
-              <style>{`
-    /* 1. Скриваме вградените сиви стрелки и контроли на iOS и Android, за да не пречат */
-    .empty-card-date::-webkit-calendar-picker-indicator,
-    .empty-card-date::-webkit-inner-spin-button,
-    .empty-card-date::-webkit-clear-button {
-      background: transparent;
-      color: transparent;
-      opacity: 0;
-      -webkit-appearance: none;
-    }
-
-    /* 2. Налагаме нашия чист текст "Purchase date" точно по средата */
-    .empty-card-date::before {
-      content: 'Purchase date';
-      color: #999;
-      position: absolute;
-      left: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      font-size: 13px;
-      font-family: inherit;
-    }
-  `}</style>
-            </div>
+            <input
+              type="text"
+              name="purchaseDate"
+              placeholder="Purchase date (e.g. 2026-07-05)" // Слагаме ясен placeholder
+              value={editedData.purchaseDate || ""} // Защита от бял екран, ако е празно
+              onChange={handleInputChange} // Твоята функция си работи без промяна
+              style={{
+                padding: "6px",
+                fontSize: "13px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                backgroundColor: "#fff", // Чисто бяло
+                color: "#000",
+                width: "100%",
+                boxSizing: "border-box",
+                display: "block",
+              }}
+            />
             <input
               type="number"
               name="warrantyMonths"
