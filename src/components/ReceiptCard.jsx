@@ -1,125 +1,164 @@
-import React, { useState } from "react";
+import { useState } from 'react'
 
 function ReceiptCard({ receipt, onDelete }) {
-  const [showDetails, setShowDetails] = useState(false);
-  // Локален стейт за снимката директно в картата
-  const [cardImage, setCardImage] = useState(receipt.image || null);
-const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        
-        reader.onloadend = () => {
-            const base64String = reader.result; // Това е твоята снимка като текст
-            
-            // 1. Записваме я в стейта, за да излезе на екрана веднага
-            setCardImage(base64String); 
-            
-            // 2. Записваме я трайно в localStorage за тази конкретна карта
-            const savedReceipts = JSON.parse(localStorage.getItem('receipts')) || [];
-            const updatedReceipts = savedReceipts.map(r => {
-                if (r.id === receipt.id) {
-                    return { ...r, image: base64String }; // Добавяме снимката към обекта
-                }
-                return r;
-            });
-            
-            localStorage.setItem('receipts', JSON.stringify(updatedReceipts));
-        };
-        
-        reader.readAsDataURL(file);
-    }
-};
-  const warrantyEnd = new Date(receipt.purchaseDate);
-  warrantyEnd.setMonth(warrantyEnd.getMonth() + Number(receipt.warrantyMonths));
-  const isUnderWarranty = new Date() < warrantyEnd;
+    const [showDetails, setShowDetails] = useState(false)
+    const [cardImage, setCardImage] = useState(receipt.image || null)
+    
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                setCardImage(base64String); 
+                
+                const savedReceipts = JSON.parse(localStorage.getItem('receipts')) || [];
+                const updatedReceipts = savedReceipts.map(r => {
+                    if (r.id === receipt.id) {
+                        return { ...r, image: base64String };
+                    }
+                    return r;
+                });
+                localStorage.setItem('receipts', JSON.stringify(updatedReceipts));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
-  return (
-    <div className="border-2 border-gray-200 p-4 rounded-xl bg-white shadow-sm mb-4">
-      
-      {/* МАЛКАТА КАРТА (Снимката е отстрани вдясно, ако я има) */}
-      {!showDetails && (
-        <div className="flex justify-between items-start gap-4">
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-gray-800">{receipt.productName}</h3>
-            <p className={`font-semibold text-sm ${isUnderWarranty ? "text-green-600" : "text-red-500"}`}>
-              {isUnderWarranty ? "✅ In warranty" : "❌ Expired"}
-            </p>
-            <p className="text-sm text-gray-600 mt-1">Store: {receipt.store}</p>
-            <p className="text-xs text-gray-400">S/N: {receipt.serialNumber}</p>
+    const warrantyEnd = new Date(receipt.purchaseDate)
+    warrantyEnd.setMonth(warrantyEnd.getMonth() + Number(receipt.warrantyMonths))
+    const isUnderWarranty = new Date() < warrantyEnd
+
+    // Цвят за страничната линия тип Jira (Зелено за валидна, Червено за изтекла)
+    const statusColor = isUnderWarranty ? '#2e7d32' : '#d32f2f'
+
+    return (
+        <div style={{ 
+            display: 'flex', 
+            gap: '15px', 
+            alignItems: 'start', 
+            marginBottom: '20px',
+            backgroundColor: '#fff',
+            padding: '15px',
+            borderRadius: '12px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+            position: 'relative',
+            // СТРАНИЧНОТО ОЦВЕТЯВАНЕ ТИП JIRA:
+            borderLeft: `6px solid ${statusColor}` 
+        }}>
             
-            {/* Ако няма снимка, показваме малкия бутон за добавяне отдолу */}
-            {!cardImage && (
-              <div className="mt-3">
-                <label className="text-xs font-medium text-blue-600 cursor-pointer hover:underline">
-                  ➕ Добави снимка
-                  <input
-                    type="file"
-                    accept="image/*"
-                  
-                    capture="environment"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
+            {/* СНИМКА ИЛИ ИНПУТ ЗА СНИМАНЕ (ОТСТРАНИ) */}
+            <div style={{ width: '120px', flexShrink: 0 }}>
+                {cardImage ? (
+                    <img 
+                        src={cardImage}
+                        onClick={() => setShowDetails(!showDetails)}
+                        style={{ 
+                            cursor: 'pointer',
+                            width: '100%',
+                            height: '120px',
+                            objectFit: 'cover',
+                            borderRadius: '8px'
+                        }}
+                        alt="receipt"
+                    />
+                ) : (
+                    <div style={{ 
+                        border: '1px dashed #ccc', 
+                        padding: '10px', 
+                        borderRadius: '8px',
+                        textAlign: 'center',
+                        backgroundColor: '#fcfcfc'
+                    }}>
+                        <label style={{ fontSize: '11px', display: 'block', marginBottom: '5px', color: '#666', fontWeight: 'bold' }}>
+                            📷 СНИМАЙ
+                        </label>
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            capture
+                            onChange={handleFileChange}
+                            style={{ width: '100%', fontSize: '10px' }}
+                        />
+                    </div>
+                )}
+            </div>
+            
+            {/* ИНФОРМАЦИЯ НА КАРТАТА */}
+            <div style={{ flexGrow: 1 }}>
+                <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#333' }}>
+                    {receipt.productName}
+                </h3>
+                
+                <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#666' }}>
+                    <strong>Магазин:</strong> {receipt.store}
+                </p>
+                <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#666' }}>
+                    <strong>Изтича на:</strong> {warrantyEnd.toLocaleDateString()}
+                </p>
+                <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#999' }}>
+                    S/N: {receipt.serialNumber || 'Няма'}
+                </p>
+
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <span style={{
+                        color: statusColor,
+                        fontWeight: 'bold',
+                        fontSize: '13px',
+                        backgroundColor: isUnderWarranty ? '#e8f5e9' : '#ffebee',
+                        padding: '4px 8px',
+                        borderRadius: '4px'
+                    }}>
+                        {isUnderWarranty ? 'In warranty' : 'Expired'}
+                    </span>
+
+                    {/* БУТОН ЗА ИЗТРИВАНЕ ДИРЕКТНО НА КАРТАТА */}
+                    <button 
+                        onClick={() => onDelete(receipt.id)}
+                        style={{ 
+                            backgroundColor: 'transparent',
+                            color: '#d32f2f', 
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: '13px',
+                            fontWeight: 'bold',
+                            padding: '4px 8px'
+                        }}
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+            {/* МОДАЛ / ДЕТАЙЛИ ПРИ ЗАКЛИКВАНЕ НА СНИМКАТА */}
+            {showDetails && (
+                <div style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    borderRadius: '12px',
+                    padding: '15px',
+                    boxSizing: 'border-box',
+                    zIndex: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center'
+                }}>
+                    <p style={{ margin: '2px 0' }}><strong>Купено на:</strong> {receipt.purchaseDate}</p>
+                    <p style={{ margin: '2px 0' }}><strong>Гаранция:</strong> {receipt.warrantyMonths} месеца</p>
+                    <button 
+                        onClick={() => setShowDetails(false)}
+                        style={{ marginTop: '10px', alignSelf: 'start', padding: '4px 12px' }}
+                    >
+                        Затвори детайли
+                    </button>
+                </div>
             )}
-          </div>
-
-          {/* Снимката се показва малка отстрани вдясно */}
-          {cardImage && (
-            <img
-              src={cardImage}
-              onClick={() => setShowDetails(true)}
-              className="w-20 h-20 object-cover rounded-lg cursor-pointer border hover:opacity-90 transition-opacity"
-              alt="receipt preview"
-            />
-          )}
         </div>
-      )}
-
-      {/* МОДАЛ / ГОЛЯМАТА КАРТА (При цъкане на снимката) */}
-      {showDetails && (
-        <div className="flex flex-col gap-3 border-t-2 border-blue-500 pt-3 mt-1">
-          <h3 className="text-xl font-bold text-gray-800">{receipt.productName}</h3>
-          
-          {cardImage && (
-            <img
-              src={cardImage}
-              className="w-full max-h-[300px] object-contain rounded-lg border bg-gray-50"
-              alt="full receipt"
-            />
-          )}
-
-          <div className="text-sm text-gray-700 space-y-1">
-            <p><strong>Store:</strong> {receipt.store}</p>
-            <p><strong>Purchased:</strong> {receipt.purchaseDate}</p>
-            <p><strong>Warranty:</strong> {receipt.warrantyMonths} months</p>
-            <p><strong>Expires:</strong> {warrantyEnd.toLocaleDateString()}</p>
-            <p className={`font-bold text-base ${isUnderWarranty ? "text-green-600" : "text-red-500"}`}>
-              {isUnderWarranty ? "✅ IN WARRANTY" : "❌ WARRANTY EXPIRED"}
-            </p>
-            <p className="text-xs text-gray-500"><strong>Serial Number:</strong> {receipt.serialNumber}</p>
-          </div>
-
-          <div className="flex gap-2 mt-2">
-            <button
-              onClick={() => setShowDetails(false)}
-              className="bg-gray-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-600"
-            >
-              Close
-            </button>
-            <button
-              onClick={() => onDelete(receipt.id)}
-              className="bg-red-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-600"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    )
 }
 
-export default ReceiptCard;
+export default ReceiptCard
