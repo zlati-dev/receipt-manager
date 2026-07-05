@@ -165,14 +165,25 @@ function ReceiptCard({ receipt, onDelete }) {
             <input
               type={editedData.purchaseDate ? "date" : "text"}
               name="purchaseDate"
-              placeholder="Purchase Date"
+              placeholder="Дата на покупка"
               value={editedData.purchaseDate}
               onFocus={(e) => (e.target.type = "date")}
               onBlur={(e) => {
                 if (!e.target.value) e.target.type = "text";
               }}
               onChange={handleInputChange}
-              style={{ padding: "4px", fontSize: "13px" }}
+              style={{
+                padding: "6px 4px",
+                fontSize: "13px",
+                backgroundColor: "#fff", // Изрично БЯЛ фон
+                border: "1px solid #ccc", // Хубава тънка граница
+                borderRadius: "4px", // Заобляне като другите полета
+                color: "#333", // Тъмен цвят на текста
+                webkitAppearance: "none", // Премахва вградения сив стил за iOS (Safari)
+                appearance: "none", // Премахва вградения стил за Android
+                width: "100%", // Да заема цялата ширина на колоната
+                boxSizing: "border-box",
+              }}
             />
             <input
               type="number"
