@@ -145,30 +145,58 @@ function ReceiptCard({ receipt, onDelete, onUpdate }) {
                 border: "1px solid #ccc",
               }}
             />
-            <input
-              type={editedData.purchaseDate ? "date" : "text"} // Ако е празно, става текст, за да не крашне!
-              name="purchaseDate"
-              placeholder="Дата на покупка"
-              value={editedData.purchaseDate || ""} // Подсигуряваме, че няма да е undefined
-              onFocus={(e) => (e.target.type = "date")}
-              onBlur={(e) => {
-                if (!e.target.value) e.target.type = "text";
-              }}
-              onChange={handleInputChange}
-              style={{
-                padding: "6px",
-                fontSize: "13px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-                backgroundColor: "#fff",
-                color: "#000",
-                WebkitTextFillColor: "#000",
-                opacity: 1,
-                width: "100%",
-                boxSizing: "border-box",
-              }}
-            />
+            <div style={{ position: "relative", width: "100%" }}>
+              <input
+                type="date"
+                name="purchaseDate"
+                value={editedData.purchaseDate || ""} // Подсигуряваме срещу бял екран, ако е празно
+                onChange={handleInputChange} // Твоята функция за промяна
+                className={!editedData.purchaseDate ? "empty-card-date" : ""}
+                style={{
+                  padding: "6px",
+                  fontSize: "13px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: "#fff", // Изрично БЯЛ фон
+                  color: editedData.purchaseDate ? "#000" : "transparent", // Скрива дефолтния текст, ако няма дата
+                  WebkitTextFillColor: editedData.purchaseDate
+                    ? "#000"
+                    : "transparent",
+                  width: "100%",
+                  boxSizing: "border-box",
+                  display: "block",
+                  lineHeight: "1.2",
+                  appearance: "none",
+                  WebkitAppearance: "none",
+                }}
+              />
 
+              {/* Инжектираме стила, който скрива системните иконки на телефона и слага чист placeholder */}
+              <style>{`
+    /* 1. Скриваме вградените сиви стрелки и контроли на iOS и Android, за да не пречат */
+    .empty-card-date::-webkit-calendar-picker-indicator,
+    .empty-card-date::-webkit-inner-spin-button,
+    .empty-card-date::-webkit-clear-button {
+      background: transparent;
+      color: transparent;
+      opacity: 0;
+      -webkit-appearance: none;
+    }
+
+    /* 2. Налагаме нашия чист текст "Purchase date" точно по средата */
+    .empty-card-date::before {
+      content: 'Purchase date';
+      color: #999;
+      position: absolute;
+      left: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 13px;
+      font-family: inherit;
+    }
+  `}</style>
+            </div>
             <input
               type="number"
               name="warrantyMonths"
