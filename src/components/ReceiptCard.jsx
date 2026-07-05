@@ -163,26 +163,26 @@ function ReceiptCard({ receipt, onDelete }) {
               placeholder="Магазин"
             />
             <input
-              type={editedData.purchaseDate ? "date" : "text"}
-              name="purchaseDate"
-              placeholder="Дата на покупка"
-              value={editedData.purchaseDate}
+              type="text" // Започва като текст, за да покаже placeholder-а
+              placeholder="Purchase date"
+              value={purchaseDate} // или както се казва стейтът ти тук (напр. newReceipt.purchaseDate)
               onFocus={(e) => (e.target.type = "date")}
               onBlur={(e) => {
                 if (!e.target.value) e.target.type = "text";
               }}
-              onChange={handleInputChange}
+              onChange={(e) => setPurchaseDate(e.target.value)} // промени го според твоята функция
               style={{
-                padding: "6px 4px",
-                fontSize: "13px",
+                padding: "12px",
+                borderRadius: "8px",
+                border: "1px solid #ddd",
                 backgroundColor: "#fff", // Изрично БЯЛ фон
-                border: "1px solid #ccc", // Хубава тънка граница
-                borderRadius: "4px", // Заобляне като другите полета
-                color: "#333", // Тъмен цвят на текста
-                webkitAppearance: "none", // Премахва вградения сив стил за iOS (Safari)
-                appearance: "none", // Премахва вградения стил за Android
-                width: "100%", // Да заема цялата ширина на колоната
+                fontSize: "16px",
+                color: "#333",
+                width: "100%",
                 boxSizing: "border-box",
+                webkitAppearance: "none", // Маха сивия мобилен бъг за iOS
+                appearance: "none", // Маха сивия мобилен бъг за Android
+                minHeight: "45px", // Гарантира, че ще е висок колкото другите инпути
               }}
             />
             <input
