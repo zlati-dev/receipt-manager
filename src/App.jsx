@@ -16,12 +16,16 @@ function App() {
   // sinhronizirane s LocalStorage pri promena na receipts
   useEffect(() => {
     localStorage.setItem("receipts", JSON.stringify(receipts));
-
   }, [receipts]);
 
   // Nova belejka se dobavq kum spisaka
   const addReceipt = (newReceipt) => {
     setReceipts([...receipts, newReceipt]);
+  };
+
+  // 🛠️ НОВА ФУНКЦИЯ: Обновяване на бележка при Редактиране (Спира белия екран в Netlify)
+  const updateReceipt = (updatedReceipt) => {
+    setReceipts(receipts.map((r) => r.id === updatedReceipt.id ? updatedReceipt : r));
   };
 
   // iztrivane na belejka po ID
@@ -45,7 +49,6 @@ function App() {
         Receipt Manager
       </h1>
 
-      
       <ReceiptFrom onAdd={addReceipt} />
 
       {/* filtri */}
@@ -56,8 +59,12 @@ function App() {
         setFilterStore={setFilterStore}
       />
 
-      {/* spisak belejki*/}
-      <ReceiptList receipts={filtered} onDelete={deleteReceipt} />
+      {/* spisak belejki - Подаваме новата функция updateReceipt на списъка */}
+      <ReceiptList 
+        receipts={filtered} 
+        onDelete={deleteReceipt} 
+        onUpdate={updateReceipt} // <-- ДОБАВИ ТОЗИ РЕД ТУК
+      />
     </div>
   );
 }
