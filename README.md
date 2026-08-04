@@ -1,30 +1,41 @@
 # Receipt Manager
 
-A web application for managing receipts and tracking product warranties.
+A web application for managing receipts and tracking product warranties. Built with React, Vite, and Tailwind CSS.
 
 ## Features
--Add receipts with product details
--Track warranty expiration dates
--Filter by product name or store
--Save receipt photos permanently for warranty proof 
--Visual warranty status (green/red)
--Data saved localy in browser
 
-##Tech stack
--React
--Vite
--Tailwind CSS
--LocalStorage
+- ➕ Add receipts with product details (store, product name, purchase date, warranty months, serial number)
+- 📸 Upload receipt photos as permanent warranty proof
+- ⏰ Track warranty expiration dates automatically
+- 🟢 Visual warranty status indicator (green = in warranty, red = expired)
+- 🔍 Search and filter by product name or store
+- ✏️ Edit receipt details
+- 🗑️ Delete receipts
+- 💾 Data saved locally in browser (LocalStorage)
+- 🖼️ Fullscreen receipt image viewer
 
-## How to use
-1.Add a receipt with product name,store purchase date and warranty months
-2.Green =in warranty/Red =Expired
-3.Upload a photo of the physical receip to ssave it as permanent proof.
+## Tech Stack
 
+- React 19
+- Vite
+- Tailwind CSS
+- LocalStorage
 
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## How to Use
+
+1. Add a receipt with product name, store, purchase date, and warranty months
+2. Green border = in warranty / Red border = expired
+3. Upload a photo of the physical receipt to save it as permanent proof
+4. Use search and filter to find receipts quickly
 
 ## Author
-Zlatka Pencheva 
+
+Zlati Pencheva
 2026
-
-
